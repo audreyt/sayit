@@ -20,30 +20,29 @@ class ImportCommand(BaseCommand):
     importer_class = None
     document_extension = ''
 
-    option_list = BaseCommand.option_list + (
-        make_option('--commit', action='store_true', help='Whether to commit to the database or not'),
-        make_option('--instance', action='store', help='Label of instance to add data to'),
-        make_option('--file', action='store', help='document to import'),
-        make_option('--dir', action='store', help='directory of documents to import'),
-        make_option(
+    def add_arguments(self, parser):
+        parser.add_argument('--commit', action='store_true', help='Whether to commit to the database or not')
+        parser.add_argument('--instance', action='store', help='Label of instance to add data to')
+        parser.add_argument('--file', action='store', help='document to import')
+        parser.add_argument('--dir', action='store', help='directory of documents to import')
+        parser.add_argument(
             '--no-verify', action='store_false', default=True, dest='verify',
-            help='Whether to verify SSL certificates or not'),
-        make_option(
+            help='Whether to verify SSL certificates or not')
+        parser.add_argument(
             '--start-date', action='store', default='',
-            help='earliest date to process, in yyyy-mm-dd format'),
-        make_option(
+            help='earliest date to process, in yyyy-mm-dd format')
+        parser.add_argument(
             '--dump-users', action='store', default='',
-            help='dump a json list to <file> (only valid with --dir for now)'),
-        make_option(
+            help='dump a json list to <file> (only valid with --dir for now)')
+        parser.add_argument(
             '--clobber-existing', action='store_const', const='replace', dest='clobber',
-            help='Whether to replace sections with the same heading'),
-        make_option(
+            help='Whether to replace sections with the same heading')
+        parser.add_argument(
             '--skip-existing', action='store_const', const='skip', dest='clobber',
-            help='Whether to skip sections with the same heading'),
-        make_option(
+            help='Whether to skip sections with the same heading')
+        parser.add_argument(
             '--merge-existing', action='store_const', const='merge', dest='clobber',
-            help='Whether to merge sections with the same heading'),
-        )
+            help='Whether to merge sections with the same heading')
 
     def handle(self, *args, **options):
         verbosity = int(options['verbosity'])
